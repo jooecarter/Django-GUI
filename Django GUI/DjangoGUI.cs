@@ -20,7 +20,7 @@ namespace Django_GUI
 
         private void DjangoGUI_Load(object sender, EventArgs e)
         {
-            Welcome welcome = new Welcome();
+            Welcome welcome = new Welcome(this);
             NavigationPnl.Controls.Add(welcome);
         }
     }

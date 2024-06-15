@@ -49,9 +49,9 @@
             this.panel1.Controls.Add(this.pictureBox2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.CreateNewProject);
-            this.panel1.Location = new System.Drawing.Point(242, 5);
+            this.panel1.Location = new System.Drawing.Point(233, 5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 207);
+            this.panel1.Size = new System.Drawing.Size(235, 207);
             this.panel1.TabIndex = 0;
             // 
             // panel2
@@ -60,9 +60,9 @@
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.RunWebServer);
-            this.panel2.Location = new System.Drawing.Point(27, 5);
+            this.panel2.Location = new System.Drawing.Point(3, 5);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(200, 207);
+            this.panel2.Size = new System.Drawing.Size(224, 207);
             this.panel2.TabIndex = 1;
             // 
             // CreateNewProject
@@ -72,20 +72,21 @@
             this.CreateNewProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreateNewProject.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CreateNewProject.ForeColor = System.Drawing.Color.Black;
-            this.CreateNewProject.Location = new System.Drawing.Point(28, 149);
+            this.CreateNewProject.Location = new System.Drawing.Point(48, 149);
             this.CreateNewProject.Name = "CreateNewProject";
             this.CreateNewProject.Size = new System.Drawing.Size(141, 30);
             this.CreateNewProject.TabIndex = 3;
             this.CreateNewProject.Text = "Get Started";
             this.CreateNewProject.UseVisualStyleBackColor = false;
+            this.CreateNewProject.Click += new System.EventHandler(this.CreateNewProject_Click);
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(18, 61);
+            this.label1.Location = new System.Drawing.Point(0, 61);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(165, 71);
+            this.label1.Size = new System.Drawing.Size(235, 71);
             this.label1.TabIndex = 4;
             this.label1.Text = "Create New \r\nDjango Project";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -94,9 +95,9 @@
             // 
             this.label2.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(19, 61);
+            this.label2.Location = new System.Drawing.Point(1, 61);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(165, 71);
+            this.label2.Size = new System.Drawing.Size(222, 71);
             this.label2.TabIndex = 6;
             this.label2.Text = "Run Django \r\nWeb Server";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -108,7 +109,7 @@
             this.RunWebServer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RunWebServer.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RunWebServer.ForeColor = System.Drawing.Color.Black;
-            this.RunWebServer.Location = new System.Drawing.Point(29, 149);
+            this.RunWebServer.Location = new System.Drawing.Point(41, 149);
             this.RunWebServer.Name = "RunWebServer";
             this.RunWebServer.Size = new System.Drawing.Size(141, 30);
             this.RunWebServer.TabIndex = 5;
@@ -118,7 +119,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Django_GUI.Properties.Resources.ServerIcon;
-            this.pictureBox1.Location = new System.Drawing.Point(79, 26);
+            this.pictureBox1.Location = new System.Drawing.Point(90, 26);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(48, 29);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -128,7 +129,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Django_GUI.Properties.Resources.NewIcon;
-            this.pictureBox2.Location = new System.Drawing.Point(75, 26);
+            this.pictureBox2.Location = new System.Drawing.Point(92, 26);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(48, 29);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
