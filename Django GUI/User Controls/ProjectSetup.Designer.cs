@@ -34,6 +34,7 @@
             this.OpenIDE = new System.Windows.Forms.Button();
             this.OpenFiles = new System.Windows.Forms.Button();
             this.PreviousStep = new System.Windows.Forms.PictureBox();
+            this.InstallPython = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PreviousStep)).BeginInit();
             this.SuspendLayout();
             // 
@@ -123,10 +124,27 @@
             this.PreviousStep.Visible = false;
             this.PreviousStep.Click += new System.EventHandler(this.PreviousStep_Click);
             // 
+            // InstallPython
+            // 
+            this.InstallPython.BackColor = System.Drawing.Color.White;
+            this.InstallPython.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.InstallPython.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InstallPython.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InstallPython.ForeColor = System.Drawing.Color.Black;
+            this.InstallPython.Location = new System.Drawing.Point(335, 185);
+            this.InstallPython.Name = "InstallPython";
+            this.InstallPython.Size = new System.Drawing.Size(121, 30);
+            this.InstallPython.TabIndex = 16;
+            this.InstallPython.Text = "Install Python";
+            this.InstallPython.UseVisualStyleBackColor = false;
+            this.InstallPython.Visible = false;
+            this.InstallPython.Click += new System.EventHandler(this.InstallPython_Click);
+            // 
             // ProjectSetup
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(46)))), ((int)(((byte)(32)))));
+            this.Controls.Add(this.InstallPython);
             this.Controls.Add(this.PreviousStep);
             this.Controls.Add(this.OpenFiles);
             this.Controls.Add(this.OpenIDE);
@@ -150,5 +168,6 @@
         private System.Windows.Forms.Button OpenIDE;
         private System.Windows.Forms.Button OpenFiles;
         private System.Windows.Forms.PictureBox PreviousStep;
+        private System.Windows.Forms.Button InstallPython;
     }
 }

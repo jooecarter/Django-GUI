@@ -21,5 +21,13 @@ namespace Django_GUI.User_Controls
             parent.NavigationPnl.Controls.Clear(); // Clear the current controls in the navigation panel
             parent.NavigationPnl.Controls.Add(createNew); // Add the CreateNew control to the navigation panel
         }
+
+        private void OpenExisting_Click(object sender, EventArgs e)
+        {
+            ExistingProjects existing = new ExistingProjects();
+
+            parent.NavigationPnl.Controls.Clear();
+            parent.NavigationPnl.Controls.Add(existing);
+        }
     }
 }

@@ -63,6 +63,18 @@
     <Compile Include="User Controls\CreateNew.Designer.cs">
       <DependentUpon>CreateNew.cs</DependentUpon>
     </Compile>
+    <Compile Include="User Controls\ExistingProjects.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\ExistingProjects.Designer.cs">
+      <DependentUpon>ExistingProjects.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User Controls\ProjectItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\ProjectItem.Designer.cs">
+      <DependentUpon>ProjectItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="User Controls\ProjectSetup.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -90,6 +102,12 @@
     </Compile>
     <EmbeddedResource Include="User Controls\CreateNew.resx">
       <DependentUpon>CreateNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\ExistingProjects.resx">
+      <DependentUpon>ExistingProjects.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\ProjectItem.resx">
+      <DependentUpon>ProjectItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User Controls\ProjectSetup.resx">
       <DependentUpon>ProjectSetup.cs</DependentUpon>

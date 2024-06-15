@@ -33,7 +33,7 @@
             this.CreateNewProject = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.RunWebServer = new System.Windows.Forms.Button();
+            this.OpenExisting = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
@@ -85,7 +85,7 @@
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.RunWebServer);
+            this.panel2.Controls.Add(this.OpenExisting);
             this.panel2.Location = new System.Drawing.Point(3, 5);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(224, 207);
@@ -102,19 +102,20 @@
             this.label2.Text = "Open Existing\r\nDjango Project";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // RunWebServer
+            // OpenExisting
             // 
-            this.RunWebServer.BackColor = System.Drawing.Color.White;
-            this.RunWebServer.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.RunWebServer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RunWebServer.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RunWebServer.ForeColor = System.Drawing.Color.Black;
-            this.RunWebServer.Location = new System.Drawing.Point(41, 149);
-            this.RunWebServer.Name = "RunWebServer";
-            this.RunWebServer.Size = new System.Drawing.Size(141, 30);
-            this.RunWebServer.TabIndex = 5;
-            this.RunWebServer.Text = "Get Started";
-            this.RunWebServer.UseVisualStyleBackColor = false;
+            this.OpenExisting.BackColor = System.Drawing.Color.White;
+            this.OpenExisting.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.OpenExisting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OpenExisting.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OpenExisting.ForeColor = System.Drawing.Color.Black;
+            this.OpenExisting.Location = new System.Drawing.Point(41, 149);
+            this.OpenExisting.Name = "OpenExisting";
+            this.OpenExisting.Size = new System.Drawing.Size(141, 30);
+            this.OpenExisting.TabIndex = 5;
+            this.OpenExisting.Text = "Get Started";
+            this.OpenExisting.UseVisualStyleBackColor = false;
+            this.OpenExisting.Click += new System.EventHandler(this.OpenExisting_Click);
             // 
             // pictureBox1
             // 
@@ -159,7 +160,7 @@
         private System.Windows.Forms.Button CreateNewProject;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button RunWebServer;
+        private System.Windows.Forms.Button OpenExisting;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
     }

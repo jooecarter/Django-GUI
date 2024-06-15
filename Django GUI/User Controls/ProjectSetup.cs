@@ -21,6 +21,8 @@ namespace Django_GUI.User_Controls
 
         private string projectName, projectPath, projectVersion; // Variables to store project details
 
+        private bool pythonInstalled = false, shouldRetry = false;
+
         public ProjectSetup(DjangoGUI parent, string projectName, string projectPath, string projectVersion)
         {
             InitializeComponent();
@@ -33,67 +35,116 @@ namespace Django_GUI.User_Controls
             this.projectVersion = projectVersion;
         }
 
+        private void AddToPath(string directory)
+        {
+            string path = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+            if (!path.Split(';').Contains(directory))
+            {
+                path = string.Join(";", path, directory);
+                Environment.SetEnvironmentVariable("PATH", path, EnvironmentVariableTarget.User);
+            }
+        }
+
         // Event handler for loading the ProjectSetup control
         private async void ProjectSetup_Load(object sender, EventArgs e)
         {
             rtbOutput.Clear(); // Clear the output text box
             await Task.Run(() => CreateDjangoProject(projectName, projectPath, projectVersion)); // Create the Django project
 
-            // Show buttons for next actions after the project setup is complete
-            OpenFiles.Visible = true;
-            OpenIDE.Visible = true;
-            RunServer.Visible = true;
+            if (pythonInstalled == false)
+            {
+                PreviousStep.Location = new Point(300, 190);
+                InstallPython.Visible = true;
+            }
+            else
+            {
+                // Show buttons for next actions after the project setup is complete
+                OpenFiles.Visible = true;
+                OpenIDE.Visible = true;
+                RunServer.Visible = true;
+            }
+
             PreviousStep.Visible = true;
         }
 
-        // Check if Python is installed
         private bool IsPythonInstalled()
         {
             try
             {
-                RunCommand("python --version", Directory.GetCurrentDirectory()); // Run python command to check installation
-                return true;
+                ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c python --version")
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WorkingDirectory = Directory.GetCurrentDirectory()
+                };
+
+                using (Process process = new Process())
+                {
+                    process.StartInfo = processStartInfo;
+                    process.Start();
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+
+                    if (error.Contains("Python was not found"))
+                    {
+                        return false;
+                    }
+                    return true;
+                }
             }
             catch
             {
-                return false;
-            }
-        }
-
-        // Install Python if not installed
-        private void InstallPython()
-        {
-            string pythonInstallerUrl = "https://www.python.org/ftp/python/3.9.1/python-3.9.1-amd64.exe"; // URL to download Python installer
-            string installerPath = Path.Combine(Path.GetTempPath(), "python-installer.exe"); // Path to save the installer
-
-            using (var client = new WebClient())
-            {
-                client.DownloadFile(pythonInstallerUrl, installerPath); // Download the installer
+                // Ignore exceptions and return false
             }
 
-            // Run the installer
-            RunCommand(installerPath + " /quiet InstallAllUsers=1 PrependPath=1", Path.GetTempPath());
+            return false;
         }
 
-        // Check if pip is installed
         private bool IsPipInstalled()
         {
             try
             {
-                RunCommand("pip --version", Directory.GetCurrentDirectory()); // Run pip command to check installation
-                return true;
+                ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c python -m pip --version")
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WorkingDirectory = Directory.GetCurrentDirectory()
+                };
+
+                using (Process process = new Process())
+                {
+                    process.StartInfo = processStartInfo;
+                    process.Start();
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+
+                    if (output.Contains("pip") || error.Contains("pip"))
+                    {
+                        return true;
+                    }
+                }
             }
             catch
             {
-                return false;
+                // Ignore exceptions and return false
             }
+
+            return false;
         }
 
-        // Install pip if not installed
         private void InstallPip()
         {
-            RunCommand("python -m ensurepip", Directory.GetCurrentDirectory()); // Ensure pip is installed
-            RunCommand("pip install --upgrade pip", Directory.GetCurrentDirectory()); // Upgrade pip to the latest version
+            // Ensure pip is installed
+            RunCommand("python -m ensurepip --default-pip", Directory.GetCurrentDirectory());
+
+            // Upgrade pip to the latest version
+            RunCommand("python -m pip install --upgrade pip", Directory.GetCurrentDirectory());
         }
 
         // Create a new Django project
@@ -104,10 +155,12 @@ namespace Django_GUI.User_Controls
                 // Ensure Python is installed
                 if (!IsPythonInstalled())
                 {
-                    AppendTextToOutput("Python is not installed. Installing Python...");
-                    InstallPython();
-                    AppendTextToOutput("Python installed successfully.");
+                    pythonInstalled = false;
+
+                    AppendTextToOutput("Python is not installed. Please install Python before setting up the Django project.");
+                    return;
                 }
+                else { pythonInstalled = true; }
 
                 // Ensure pip is installed
                 if (!IsPipInstalled())
@@ -118,10 +171,10 @@ namespace Django_GUI.User_Controls
                 }
 
                 // Install virtualenv
-                RunCommand("pip install virtualenv", directory);
+                RunCommand("python -m pip install virtualenv", directory);
 
                 // Navigate to the desired folder and setup a new virtual environment
-                RunCommand($"cd \"{directory}\" && virtualenv {projectName}", directory);
+                RunCommand($"cd \"{directory}\" && python -m virtualenv {projectName}", directory);
                 AppendTextToOutput($"Virtual environment '{projectName}' created successfully.");
 
                 // Activate the virtual environment
@@ -129,7 +182,7 @@ namespace Django_GUI.User_Controls
                 AppendTextToOutput($"Activating virtual environment '{projectName}'.");
 
                 // Install Django inside the virtual environment
-                string installDjangoCommand = $"{activateCommand} && pip install django=={version}";
+                string installDjangoCommand = $"{activateCommand} && python -m pip install django=={version}";
                 RunCommand(installDjangoCommand, directory);
                 AppendTextToOutput($"Django {version} installed successfully.");
 
@@ -139,10 +192,10 @@ namespace Django_GUI.User_Controls
                 RunCommand(djangoAdminCommand, projectDirectory);
                 AppendTextToOutput($"Django project '{projectName}' created successfully.");
 
-                // Create a Project Specification.txt file
-                string createRequirementsFileCommand = $"{activateCommand} && pip freeze > Project Specification.txt";
+                // Create a requirements.txt file
+                string createRequirementsFileCommand = $"{activateCommand} && python -m pip freeze > requirements.txt";
                 RunCommand(createRequirementsFileCommand, projectDirectory);
-                AppendTextToOutput("Project Specification.txt file created successfully.");
+                AppendTextToOutput("requirements.txt file created successfully.");
 
                 AppendTextToOutput("Setup Complete.");
 
@@ -152,8 +205,25 @@ namespace Django_GUI.User_Controls
             catch (Exception ex)
             {
                 AppendTextToOutput($"Error: {ex.Message}");
+
+                // Check if the error contains the PATH warning
+                if (ex.Message.Contains("which is not on PATH"))
+                {
+                    string pathToAdd = ExtractPathFromWarning(ex.Message);
+                    AddToPath(pathToAdd);
+                    AppendTextToOutput($"Added {pathToAdd} to PATH.");
+                    shouldRetry = true;
+                }
             }
         }
+
+        private string ExtractPathFromWarning(string message)
+        {
+            var start = message.IndexOf("installed in '") + "installed in '".Length;
+            var end = message.IndexOf("'", start);
+            return message.Substring(start, end - start);
+        }
+
 
         // Run a command in the command prompt
         private void RunCommand(string command, string workingDirectory)
@@ -294,6 +364,11 @@ namespace Django_GUI.User_Controls
                 rtbOutput.AppendText(text + Environment.NewLine);
                 ScrollToBottom();
             }
+        }
+
+        private void InstallPython_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.python.org/downloads/");
         }
 
         // Method to write project details to a JSON file
