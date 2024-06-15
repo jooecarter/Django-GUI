@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Django GUI", "Django GUI\Django GUI.csproj", "{BAF13740-23FE-4CB8-BB3B-9AC6FAD073EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BAF13740-23FE-4CB8-BB3B-9AC6FAD073EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF13740-23FE-4CB8-BB3B-9AC6FAD073EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAF13740-23FE-4CB8-BB3B-9AC6FAD073EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAF13740-23FE-4CB8-BB3B-9AC6FAD073EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B19DC14A-D4C2-49BC-B139-1C25F1639ED2}
+	EndGlobalSection
+EndGlobal
