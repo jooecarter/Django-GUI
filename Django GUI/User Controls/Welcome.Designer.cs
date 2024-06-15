@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.CreateNewProject = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.CreateNewProject = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.RunWebServer = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -54,16 +54,16 @@
             this.panel1.Size = new System.Drawing.Size(235, 207);
             this.panel1.TabIndex = 0;
             // 
-            // panel2
+            // label1
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.RunWebServer);
-            this.panel2.Location = new System.Drawing.Point(3, 5);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(224, 207);
-            this.panel2.TabIndex = 1;
+            this.label1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(0, 61);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(235, 71);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Create New \r\nDjango Project";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CreateNewProject
             // 
@@ -80,16 +80,16 @@
             this.CreateNewProject.UseVisualStyleBackColor = false;
             this.CreateNewProject.Click += new System.EventHandler(this.CreateNewProject_Click);
             // 
-            // label1
+            // panel2
             // 
-            this.label1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(0, 61);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(235, 71);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Create New \r\nDjango Project";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Controls.Add(this.label2);
+            this.panel2.Controls.Add(this.RunWebServer);
+            this.panel2.Location = new System.Drawing.Point(3, 5);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(224, 207);
+            this.panel2.TabIndex = 1;
             // 
             // label2
             // 
@@ -99,7 +99,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(222, 71);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Run Django \r\nWeb Server";
+            this.label2.Text = "Open Existing\r\nDjango Project";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // RunWebServer
@@ -118,7 +118,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::Django_GUI.Properties.Resources.ServerIcon;
+            this.pictureBox1.Image = global::Django_GUI.Properties.Resources.OpenExistingIcon;
             this.pictureBox1.Location = new System.Drawing.Point(90, 26);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(48, 29);
@@ -129,7 +129,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Django_GUI.Properties.Resources.NewIcon;
-            this.pictureBox2.Location = new System.Drawing.Point(92, 26);
+            this.pictureBox2.Location = new System.Drawing.Point(92, 27);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(48, 29);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;

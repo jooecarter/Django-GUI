@@ -93,6 +93,16 @@ namespace Django_GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap OpenExistingIcon {
+            get {
+                object obj = ResourceManager.GetObject("OpenExistingIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap PreviousStep {
             get {
                 object obj = ResourceManager.GetObject("PreviousStep", resourceCulture);
