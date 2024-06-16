@@ -9,15 +9,13 @@ namespace Django_GUI.User_Controls
     public partial class ToolBox : UserControl
     {
         private DjangoGUI parent;
-
         private string name, path;
-
-        private bool errorOccured = false;
+        private bool errorOccurred = false;
+        private Process serverProcess; // Add this line
 
         public ToolBox(DjangoGUI parent, string name, string path)
         {
             InitializeComponent();
-
             this.name = name;
             this.parent = parent;
             this.path = path;
@@ -57,15 +55,6 @@ namespace Django_GUI.User_Controls
             }
         }
 
-        // Event handler for when the PreviousStep button is clicked
-        private void PreviousStep_Click(object sender, EventArgs e)
-        {
-            Welcome welcome = new Welcome(parent); // Create a new Welcome control with the parent reference
-
-            parent.NavigationPnl.Controls.Clear(); // Clear the current controls in the navigation panel
-            parent.NavigationPnl.Controls.Add(welcome); // Add the Welcome control to the navigation panel
-        }
-
         private async Task<bool> RunCommand(string command, string workingDirectory)
         {
             bool errorOccurred = false;
@@ -99,10 +88,22 @@ namespace Django_GUI.User_Controls
                 {
                     if (e.Data != null)
                     {
-                        AppendTextToOutput("Error: " + e.Data); // Append error output to the output text box
-                        Console.WriteLine(e.Data); // For debugging purposes
+                        if (e.Data.Contains("Watching for file changes with StatReloader"))
+                        {
+                            AppendTextToOutput("Server is active on port 8000");
+                            AppendTextToOutput("Url: http://127.0.0.1:8000");
+                            AppendTextToOutput("Type 'kill' in the prompt to end the process.");
 
-                        errorOccurred = true;
+                            errorOccurred = false;
+                            serverProcess = process; // Store the server process
+                        }
+                        else
+                        {
+                            AppendTextToOutput("Error: " + e.Data); // Append error output to the output text box
+                            Console.WriteLine(e.Data); // For debugging purposes
+
+                            errorOccurred = true;
+                        }
                     }
                 };
 
@@ -119,7 +120,10 @@ namespace Django_GUI.User_Controls
             }
             finally
             {
-                process?.Dispose();
+                if (process != serverProcess) // Don't dispose the server process
+                {
+                    process?.Dispose();
+                }
             }
 
             return errorOccurred;
@@ -136,37 +140,6 @@ namespace Django_GUI.User_Controls
             {
                 rtbOutput.SelectionStart = rtbOutput.Text.Length;
                 rtbOutput.ScrollToCaret();
-            }
-        }
-
-        private void ProjectName_Enter(object sender, EventArgs e)
-        {
-            if (ProjectName.Text == "Write command to the terminal...")
-                ProjectName.Text = "";
-        }
-
-        private void ProjectName_Leave(object sender, EventArgs e)
-        {
-            if (ProjectName.Text == "")
-                ProjectName.Text = "Write command to the terminal...";
-        }
-
-        private async void ProjectName_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                try
-                {
-                    AppendTextToOutput(ProjectName.Text);
-                    await Task.Run(() => RunCommand(ProjectName.Text, path));
-                }
-                catch (Exception ex)
-                {
-                    AppendTextToOutput($"Error: {ex.Message}");
-                }
-
-                ProjectName.Text = "Write command to the terminal...";
-                StartProject.Focus();
             }
         }
 
@@ -193,7 +166,46 @@ namespace Django_GUI.User_Controls
             bool errorOccurred = await RunCommand(batchScriptPath, Path.GetDirectoryName(path));
 
             if (!errorOccurred)
-                MessageBox.Show("Server has been activated.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Server has been activated.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private async void CmdPrompt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (CmdPrompt.Text.Trim().ToLower() == "kill")
+                {
+                    KillServer();
+                }
+                else
+                {
+                    string batchScriptPath = Path.Combine(Path.GetTempPath(), "run_commands.bat");
+
+                    // Create the batch script
+                    CreateBatchScript(batchScriptPath, Path.GetDirectoryName(path), "Scripts\\activate", path, "python manage.py " + CmdPrompt.Text);
+
+                    // Run the batch script
+                    bool errorOccurred = await RunCommand(batchScriptPath, Path.GetDirectoryName(path));
+
+                    if (!errorOccurred)
+                    {
+                        CmdPrompt.Text = "Write command to the terminal...";
+                        StartProject.Focus();
+                    }
+                }
+            }
+        }
+
+        private void CmdPrompt_Enter(object sender, EventArgs e)
+        {
+            if (CmdPrompt.Text == "Write command to the terminal...")
+                CmdPrompt.Text = "";
+        }
+
+        private void CmdPrompt_Leave(object sender, EventArgs e)
+        {
+            if (CmdPrompt.Text == "")
+                CmdPrompt.Text = "Write command to the terminal...";
         }
 
         // Append text to the output text box
@@ -208,6 +220,30 @@ namespace Django_GUI.User_Controls
                 rtbOutput.AppendText(text + Environment.NewLine);
                 ScrollToBottom();
             }
+        }
+
+        // Method to kill the server process
+        private void KillServer()
+        {
+            if (serverProcess != null && !serverProcess.HasExited)
+            {
+                serverProcess.Kill();
+                AppendTextToOutput("Server process has been terminated.");
+                MessageBox.Show("Server process has been terminated.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("No active server process found.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        // Event handler for when the PreviousStep button is clicked
+        private void PreviousStep_Click(object sender, EventArgs e)
+        {
+            Welcome welcome = new Welcome(parent); // Create a new Welcome control with the parent reference
+
+            parent.NavigationPnl.Controls.Clear(); // Clear the current controls in the navigation panel
+            parent.NavigationPnl.Controls.Add(welcome); // Add the Welcome control to the navigation panel
         }
     }
 }
