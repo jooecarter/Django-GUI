@@ -40,7 +40,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(8, 17);
+            this.label1.Location = new System.Drawing.Point(8, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(173, 19);
             this.label1.TabIndex = 6;
@@ -51,10 +51,10 @@
             // 
             this.ProjectsPnl.AutoScroll = true;
             this.ProjectsPnl.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.ProjectsPnl.Location = new System.Drawing.Point(12, 51);
+            this.ProjectsPnl.Location = new System.Drawing.Point(12, 41);
             this.ProjectsPnl.Margin = new System.Windows.Forms.Padding(0);
             this.ProjectsPnl.Name = "ProjectsPnl";
-            this.ProjectsPnl.Size = new System.Drawing.Size(460, 105);
+            this.ProjectsPnl.Size = new System.Drawing.Size(460, 115);
             this.ProjectsPnl.TabIndex = 8;
             this.ProjectsPnl.WrapContents = false;
             // 

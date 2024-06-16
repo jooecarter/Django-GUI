@@ -57,7 +57,6 @@ namespace Django_GUI.User_Controls
             }
         }
 
-
         // Event handler for when the PreviousStep button is clicked
         private void PreviousStep_Click(object sender, EventArgs e)
         {

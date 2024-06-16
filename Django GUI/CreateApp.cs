@@ -10,7 +10,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Django_GUI
 {
@@ -63,54 +65,71 @@ namespace Django_GUI
                 MessageBox.Show("Please select a location for the path.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             else
             {
-                await RunCommand("python manage.py startapp " + AppName.Text, path);
+                string batchScriptPath = Path.Combine(Path.GetTempPath(), "run_commands.bat");
 
-                if (!errorEncountered)
+                // Create the batch script
+                CreateBatchScript(batchScriptPath, Path.GetDirectoryName(path), "Scripts\\activate", path, "python manage.py startapp " + AppName.Text);
+
+                // Run the batch script
+                bool errorOccurred = await RunCommand(batchScriptPath, Path.GetDirectoryName(path));
+
+                if (errorOccurred)
+                {
+                    // Show error message
+                    MessageBox.Show("Could not run the commands. Please check your activation script and manage.py file.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
                 {
                     MessageBox.Show("App has been created.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ActiveForm.Close();
                 }
-                else
-                {
-                    MessageBox.Show("Sorry, something went wrong.\nPlease check you are creating a new app in the right directory.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
         }
 
-        private async Task RunCommand(string command, string workingDirectory)
+        private void CreateBatchScript(string scriptPath, string activateDirectory, string activateCommand, string managePyDirectory, string managePyCommand)
         {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+            using (StreamWriter writer = new StreamWriter(scriptPath))
             {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WorkingDirectory = workingDirectory
-            };
+                writer.WriteLine($"cd /d \"{activateDirectory}\"");
+                writer.WriteLine($"{activateCommand} & cd /d \"{managePyDirectory}\" & {managePyCommand}");
+            }
+        }
 
-            using (Process process = new Process())
+        private async Task<bool> RunCommand(string command, string workingDirectory)
+        {
+            bool errorOccurred = false;
+            Process process = null;
+            try
             {
-                processStartInfo.RedirectStandardOutput = true;
-                processStartInfo.RedirectStandardError = true;
-                errorEncountered = false; // Reset error flag before starting the process
+                ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WorkingDirectory = workingDirectory
+                };
 
-                StringBuilder outputBuilder = new StringBuilder();
-                StringBuilder errorBuilder = new StringBuilder();
+                process = new Process
+                {
+                    StartInfo = processStartInfo
+                };
 
-                process.StartInfo = processStartInfo;
                 process.OutputDataReceived += (sender, e) =>
                 {
-                    if (!string.IsNullOrEmpty(e.Data))
+                    if (e.Data != null)
                     {
-                        outputBuilder.AppendLine(e.Data);
+                        Console.WriteLine(e.Data); // For debugging purposes
                     }
                 };
+
                 process.ErrorDataReceived += (sender, e) =>
                 {
-                    if (!string.IsNullOrEmpty(e.Data))
+                    if (e.Data != null)
                     {
-                        errorBuilder.AppendLine(e.Data);
-                        errorEncountered = true;
+                        Console.WriteLine(e.Data); // For debugging purposes
+
+                        errorOccurred = true;
                     }
                 };
 
@@ -119,13 +138,17 @@ namespace Django_GUI
                 process.BeginErrorReadLine();
 
                 await Task.Run(() => process.WaitForExit());
-
-                // For debugging purposes, log output and errors
-                string output = outputBuilder.ToString();
-                string error = errorBuilder.ToString();
-                Console.WriteLine("Output: " + output);
-                Console.WriteLine("Error: " + error);
             }
+            catch (Exception ex)
+            {
+                errorOccurred = true;
+            }
+            finally
+            {
+                process?.Dispose();
+            }
+
+            return errorOccurred;
         }
 
         private void CreateApp_Load(object sender, EventArgs e)
