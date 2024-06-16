@@ -1,26 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Django_GUI
 {
     public partial class CreateApp : Form
     {
         private string path = "";
-
-        private bool errorEncountered = false;
 
         public CreateApp(string path)
         {
@@ -62,7 +51,7 @@ namespace Django_GUI
             if (AppName.Text == "Click to add name...")
                 MessageBox.Show("Please enter an app name.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             else if (LocationPath.Text == "")
-                MessageBox.Show("Please select a location for the path.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Please select a path for the app.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             else
             {
                 string batchScriptPath = Path.Combine(Path.GetTempPath(), "run_commands.bat");
@@ -160,6 +149,13 @@ namespace Django_GUI
 
         private void AppName_KeyPress(object sender, KeyPressEventArgs e)
         {
+            // Allow backspace
+            if (e.KeyChar == (char)Keys.Back)
+            {
+                e.Handled = false;
+                return;
+            }
+
             // Get the current text including the new character
             string currentText = AppName.Text + e.KeyChar;
 

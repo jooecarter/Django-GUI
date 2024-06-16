@@ -125,6 +125,7 @@
             this.RunServer.TabIndex = 19;
             this.RunServer.Text = "Run Sever";
             this.RunServer.UseVisualStyleBackColor = false;
+            this.RunServer.Click += new System.EventHandler(this.RunServer_Click);
             // 
             // rtbOutput
             // 

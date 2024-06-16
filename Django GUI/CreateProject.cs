@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -11,11 +12,11 @@ namespace Django_GUI
     {
         private string path = "";
 
-        private bool errorEncountered = false;
-
-        public CreateProject()
+        public CreateProject(string path)
         {
             InitializeComponent();
+
+            this.path = path;
         }
 
         // Event handler for when the Browse button is clicked
@@ -51,57 +52,74 @@ namespace Django_GUI
             if (ProjectName.Text == "Click to add name...")
                 MessageBox.Show("Please enter a project name.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             else if (LocationPath.Text == "")
-                MessageBox.Show("Please select a location for the path.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Please select a path for the project.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             else
             {
-                await RunCommand("python manage.py startproject " + ProjectName.Text, path);
+                string batchScriptPath = Path.Combine(Path.GetTempPath(), "run_commands.bat");
 
-                if (!errorEncountered)
+                // Create the batch script
+                CreateBatchScript(batchScriptPath, Path.GetDirectoryName(path), "Scripts\\activate", path, "python manage.py startproject " + ProjectName.Text);
+
+                // Run the batch script
+                bool errorOccurred = await RunCommand(batchScriptPath, Path.GetDirectoryName(path));
+
+                if (errorOccurred)
+                {
+                    // Show error message
+                    MessageBox.Show("Could not run the commands. Please check your activation script and manage.py file.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
                 {
                     MessageBox.Show("Project has been created.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ActiveForm.Close();
                 }
-                else
-                {
-                    MessageBox.Show("Sorry, something went wrong.\nPlease check you are creating a new app in the right directory.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
         }
 
-        private async Task RunCommand(string command, string workingDirectory)
+        private void CreateBatchScript(string scriptPath, string activateDirectory, string activateCommand, string managePyDirectory, string managePyCommand)
         {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+            using (StreamWriter writer = new StreamWriter(scriptPath))
             {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WorkingDirectory = workingDirectory
-            };
+                writer.WriteLine($"cd /d \"{activateDirectory}\"");
+                writer.WriteLine($"{activateCommand} & cd /d \"{managePyDirectory}\" & {managePyCommand}");
+            }
+        }
 
-            using (Process process = new Process())
+        private async Task<bool> RunCommand(string command, string workingDirectory)
+        {
+            bool errorOccurred = false;
+            Process process = null;
+            try
             {
-                processStartInfo.RedirectStandardOutput = true;
-                processStartInfo.RedirectStandardError = true;
-                errorEncountered = false; // Reset error flag before starting the process
+                ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WorkingDirectory = workingDirectory
+                };
 
-                StringBuilder outputBuilder = new StringBuilder();
-                StringBuilder errorBuilder = new StringBuilder();
+                process = new Process
+                {
+                    StartInfo = processStartInfo
+                };
 
-                process.StartInfo = processStartInfo;
                 process.OutputDataReceived += (sender, e) =>
                 {
-                    if (!string.IsNullOrEmpty(e.Data))
+                    if (e.Data != null)
                     {
-                        outputBuilder.AppendLine(e.Data);
+                        Console.WriteLine(e.Data); // For debugging purposes
                     }
                 };
+
                 process.ErrorDataReceived += (sender, e) =>
                 {
-                    if (!string.IsNullOrEmpty(e.Data))
+                    if (e.Data != null)
                     {
-                        errorBuilder.AppendLine(e.Data);
-                        errorEncountered = true;
+                        Console.WriteLine(e.Data); // For debugging purposes
+
+                        errorOccurred = true;
                     }
                 };
 
@@ -110,17 +128,28 @@ namespace Django_GUI
                 process.BeginErrorReadLine();
 
                 await Task.Run(() => process.WaitForExit());
-
-                // For debugging purposes, log output and errors
-                string output = outputBuilder.ToString();
-                string error = errorBuilder.ToString();
-                Console.WriteLine("Output: " + output);
-                Console.WriteLine("Error: " + error);
             }
+            catch (Exception ex)
+            {
+                errorOccurred = true;
+            }
+            finally
+            {
+                process?.Dispose();
+            }
+
+            return errorOccurred;
         }
 
         private void ProjectName_KeyPress(object sender, KeyPressEventArgs e)
         {
+            // Allow backspace
+            if (e.KeyChar == (char)Keys.Back)
+            {
+                e.Handled = false;
+                return;
+            }
+
             // Get the current text including the new character
             string currentText = ProjectName.Text + e.KeyChar;
 

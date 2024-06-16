@@ -172,13 +172,28 @@ namespace Django_GUI.User_Controls
 
         private void StartProject_Click(object sender, EventArgs e)
         {
-
+            CreateProject create = new CreateProject(path);
+            create.ShowDialog();
         }
 
         private void StartApp_Click(object sender, EventArgs e)
         {
             CreateApp create = new CreateApp(path);
             create.ShowDialog();
+        }
+
+        private async void RunServer_Click(object sender, EventArgs e)
+        {
+            string batchScriptPath = Path.Combine(Path.GetTempPath(), "run_commands.bat");
+
+            // Create the batch script
+            CreateBatchScript(batchScriptPath, Path.GetDirectoryName(path), "Scripts\\activate", path, "python manage.py runserver");
+
+            // Run the batch script
+            bool errorOccurred = await RunCommand(batchScriptPath, Path.GetDirectoryName(path));
+
+            if (!errorOccurred)
+                MessageBox.Show("Server has been activated.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
         // Append text to the output text box
