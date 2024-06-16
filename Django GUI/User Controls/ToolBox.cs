@@ -8,22 +8,23 @@ namespace Django_GUI.User_Controls
 {
     public partial class ToolBox : UserControl
     {
-        private DjangoGUI parent;
-        private string name, path;
-        private bool errorOccurred = false;
-        private Process serverProcess; // Add this line
+        private DjangoGUI parent; // Reference to the main application form
+        private string name, path; // Variables to store project name and path
+        private Process serverProcess; // Variable to store the server process
 
+        // Constructor to initialize the user control with project details
         public ToolBox(DjangoGUI parent, string name, string path)
         {
             InitializeComponent();
-            this.name = name;
-            this.parent = parent;
-            this.path = path;
+            this.name = name; // Set the project name
+            this.parent = parent; // Set the parent reference
+            this.path = path; // Set the project path
         }
 
+        // Event handler for loading the ToolBox control
         private async void ToolBox_Load(object sender, EventArgs e)
         {
-            NameLbl.Text = name;
+            NameLbl.Text = name; // Set the text of the Name label to the project name
 
             string batchScriptPath = Path.Combine(Path.GetTempPath(), "run_commands.bat");
 
@@ -35,7 +36,7 @@ namespace Django_GUI.User_Controls
 
             if (errorOccurred)
             {
-                ControlsPnl.Enabled = false;
+                ControlsPnl.Enabled = false; // Disable the controls panel
 
                 // Show error message
                 MessageBox.Show("Could not run the commands. Please check your activation script and manage.py file.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -46,6 +47,7 @@ namespace Django_GUI.User_Controls
             }
         }
 
+        // Method to create a batch script
         private void CreateBatchScript(string scriptPath, string activateDirectory, string activateCommand, string managePyDirectory, string managePyCommand)
         {
             using (StreamWriter writer = new StreamWriter(scriptPath))
@@ -55,6 +57,7 @@ namespace Django_GUI.User_Controls
             }
         }
 
+        // Method to run a command in the command prompt
         private async Task<bool> RunCommand(string command, string workingDirectory)
         {
             bool errorOccurred = false;
@@ -143,18 +146,21 @@ namespace Django_GUI.User_Controls
             }
         }
 
+        // Event handler for starting a new Django project
         private void StartProject_Click(object sender, EventArgs e)
         {
             CreateProject create = new CreateProject(path);
             create.ShowDialog();
         }
 
+        // Event handler for starting a new Django app
         private void StartApp_Click(object sender, EventArgs e)
         {
             CreateApp create = new CreateApp(path);
             create.ShowDialog();
         }
 
+        // Event handler for running the Django development server
         private async void RunServer_Click(object sender, EventArgs e)
         {
             string batchScriptPath = Path.Combine(Path.GetTempPath(), "run_commands.bat");
@@ -169,13 +175,17 @@ namespace Django_GUI.User_Controls
                 MessageBox.Show("Server has been activated.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        // Event handler for handling commands in the command prompt
         private async void CmdPrompt_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 if (CmdPrompt.Text.Trim().ToLower() == "kill")
                 {
-                    KillServer();
+                    KillServerByPort(8000); // Kill the server process on port 8000
+
+                    CmdPrompt.Text = "Write command to the terminal...";
+                    StartProject.Focus();
                 }
                 else
                 {
@@ -196,12 +206,14 @@ namespace Django_GUI.User_Controls
             }
         }
 
+        // Event handler for entering the command prompt
         private void CmdPrompt_Enter(object sender, EventArgs e)
         {
             if (CmdPrompt.Text == "Write command to the terminal...")
                 CmdPrompt.Text = "";
         }
 
+        // Event handler for leaving the command prompt
         private void CmdPrompt_Leave(object sender, EventArgs e)
         {
             if (CmdPrompt.Text == "")
@@ -222,22 +234,55 @@ namespace Django_GUI.User_Controls
             }
         }
 
-        // Method to kill the server process
-        private void KillServer()
+        // Method to kill the server process by port
+        private void KillServerByPort(int port)
         {
-            if (serverProcess != null && !serverProcess.HasExited)
+            try
             {
-                serverProcess.Kill();
-                AppendTextToOutput("Server process has been terminated.");
-                MessageBox.Show("Server process has been terminated.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Find the PID using the port
+                ProcessStartInfo netstatInfo = new ProcessStartInfo("cmd.exe", "/c netstat -ano | findstr :" + port)
+                {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                Process netstatProcess = Process.Start(netstatInfo);
+                StreamReader reader = netstatProcess.StandardOutput;
+                string output = reader.ReadToEnd();
+                netstatProcess.WaitForExit();
+
+                string[] lines = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                if (lines.Length > 0)
+                {
+                    string[] parts = lines[0].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string pid = parts[parts.Length - 1];
+
+                    // Kill the process using the PID
+                    ProcessStartInfo taskkillInfo = new ProcessStartInfo("cmd.exe", "/c taskkill /PID " + pid + " /F")
+                    {
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    };
+
+                    Process taskkillProcess = Process.Start(taskkillInfo);
+                    taskkillProcess.WaitForExit();
+
+                    AppendTextToOutput($"Server process with PID {pid} has been terminated.");
+                }
+                else
+                {
+                    AppendTextToOutput("No process found using the specified port.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("No active server process found.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                AppendTextToOutput($"Error: {ex.Message}");
             }
         }
 
-        // Event handler for when the PreviousStep button is clicked
+        // Event handler for going back to the previous step
         private void PreviousStep_Click(object sender, EventArgs e)
         {
             Welcome welcome = new Welcome(parent); // Create a new Welcome control with the parent reference

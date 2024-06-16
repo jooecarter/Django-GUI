@@ -1,40 +1,33 @@
-﻿using Newtonsoft.Json;
+﻿using Newtonsoft.Json; // JSON serialization and deserialization library
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
 
 namespace Django_GUI.User_Controls
 {
     public partial class ProjectSetup : UserControl
     {
         private DjangoGUI parent; // Reference to the parent form
-
         private string projectName, projectPath, projectVersion; // Variables to store project details
+        private bool pythonInstalled = false, shouldRetry = false; // Flags for Python installation status and retry condition
 
-        private bool pythonInstalled = false, shouldRetry = false;
-
+        // Constructor to initialize the user control with project details
         public ProjectSetup(DjangoGUI parent, string projectName, string projectPath, string projectVersion)
         {
-            InitializeComponent();
+            InitializeComponent(); // Initialize the user control components
 
-            this.parent = parent;
-
-            // Initialize project details
-            this.projectName = projectName;
-            this.projectPath = projectPath;
-            this.projectVersion = projectVersion;
+            this.parent = parent; // Set the parent reference
+            this.projectName = projectName; // Set the project name
+            this.projectPath = projectPath; // Set the project path
+            this.projectVersion = projectVersion; // Set the project version
         }
 
+        // Method to add a directory to the system PATH
         private void AddToPath(string directory)
         {
             string path = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
@@ -54,7 +47,7 @@ namespace Django_GUI.User_Controls
             if (pythonInstalled == false)
             {
                 PreviousStep.Location = new Point(300, 190);
-                InstallPython.Visible = true;
+                InstallPython.Visible = true; // Show the InstallPython button if Python is not installed
             }
             else
             {
@@ -64,9 +57,10 @@ namespace Django_GUI.User_Controls
                 RunServer.Visible = true;
             }
 
-            PreviousStep.Visible = true;
+            PreviousStep.Visible = true; // Show the PreviousStep button
         }
 
+        // Method to check if Python is installed
         private bool IsPythonInstalled()
         {
             try
@@ -103,6 +97,7 @@ namespace Django_GUI.User_Controls
             return false;
         }
 
+        // Method to check if pip is installed
         private bool IsPipInstalled()
         {
             try
@@ -138,6 +133,7 @@ namespace Django_GUI.User_Controls
             return false;
         }
 
+        // Method to install pip
         private void InstallPip()
         {
             // Ensure pip is installed
@@ -147,7 +143,7 @@ namespace Django_GUI.User_Controls
             RunCommand("python -m pip install --upgrade pip", Directory.GetCurrentDirectory());
         }
 
-        // Create a new Django project
+        // Method to create a new Django project
         private void CreateDjangoProject(string projectName, string directory, string version)
         {
             try
@@ -217,6 +213,7 @@ namespace Django_GUI.User_Controls
             }
         }
 
+        // Method to extract the path from a warning message
         private string ExtractPathFromWarning(string message)
         {
             var start = message.IndexOf("installed in '") + "installed in '".Length;
@@ -224,8 +221,7 @@ namespace Django_GUI.User_Controls
             return message.Substring(start, end - start);
         }
 
-
-        // Run a command in the command prompt
+        // Method to run a command in the command prompt
         private void RunCommand(string command, string workingDirectory)
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
@@ -264,7 +260,7 @@ namespace Django_GUI.User_Controls
             }
         }
 
-        // Run the Django development server
+        // Method to run the Django development server
         private void RunServerCmd(string projectName, string directory)
         {
             // Construct the paths and commands to run the server
@@ -285,7 +281,7 @@ namespace Django_GUI.User_Controls
             OpenUrlInBrowser("http://127.0.0.1:8000");
         }
 
-        // Open a URL in the default browser
+        // Method to open a URL in the default browser
         private void OpenUrlInBrowser(string url)
         {
             try
@@ -338,7 +334,7 @@ namespace Django_GUI.User_Controls
             parent.NavigationPnl.Controls.Add(welcome); // Add the Welcome control to the navigation panel
         }
 
-        // Scroll to the bottom of the output text box
+        // Method to scroll to the bottom of the output text box
         private void ScrollToBottom()
         {
             if (rtbOutput.InvokeRequired)
@@ -352,7 +348,7 @@ namespace Django_GUI.User_Controls
             }
         }
 
-        // Append text to the output text box
+        // Method to append text to the output text box
         private void AppendTextToOutput(string text)
         {
             if (rtbOutput.InvokeRequired)
@@ -366,6 +362,7 @@ namespace Django_GUI.User_Controls
             }
         }
 
+        // Event handler for installing Python
         private void InstallPython_Click(object sender, EventArgs e)
         {
             Process.Start("https://www.python.org/downloads/");

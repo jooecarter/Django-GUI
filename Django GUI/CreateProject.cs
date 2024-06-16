@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -10,13 +9,13 @@ namespace Django_GUI
 {
     public partial class CreateProject : Form
     {
-        private string path = "";
+        private string path = ""; // Variable to store the path
 
+        // Constructor to initialize the form with the specified path
         public CreateProject(string path)
         {
             InitializeComponent();
-
-            this.path = path;
+            this.path = path; // Set the path
         }
 
         // Event handler for when the Browse button is clicked
@@ -31,22 +30,25 @@ namespace Django_GUI
             if (result == DialogResult.OK)
             {
                 LocationPath.Text = folderDlg.SelectedPath; // Set the LocationPath text box to the selected folder path
-                path = folderDlg.SelectedPath;
+                path = folderDlg.SelectedPath; // Update the path variable
             }
         }
 
+        // Event handler for when the ProjectName text box gains focus
         private void ProjectName_Enter(object sender, EventArgs e)
         {
             if (ProjectName.Text == "Click to add name...")
-                ProjectName.Text = "";
+                ProjectName.Text = ""; // Clear the text box if the placeholder text is present
         }
 
+        // Event handler for when the ProjectName text box loses focus
         private void ProjectName_Leave(object sender, EventArgs e)
         {
             if (ProjectName.Text == "")
-                ProjectName.Text = "Click to add name...";
+                ProjectName.Text = "Click to add name..."; // Restore the placeholder text if the text box is empty
         }
 
+        // Event handler for when the CreateNew button is clicked
         private async void CreateNew_Click(object sender, EventArgs e)
         {
             if (ProjectName.Text == "Click to add name...")
@@ -71,11 +73,12 @@ namespace Django_GUI
                 else
                 {
                     MessageBox.Show("Project has been created.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ActiveForm.Close();
+                    ActiveForm.Close(); // Close the form
                 }
             }
         }
 
+        // Method to create a batch script
         private void CreateBatchScript(string scriptPath, string activateDirectory, string activateCommand, string managePyDirectory, string managePyCommand)
         {
             using (StreamWriter writer = new StreamWriter(scriptPath))
@@ -85,6 +88,7 @@ namespace Django_GUI
             }
         }
 
+        // Method to run a command in the command prompt
         private async Task<bool> RunCommand(string command, string workingDirectory)
         {
             bool errorOccurred = false;
@@ -118,8 +122,7 @@ namespace Django_GUI
                     if (e.Data != null)
                     {
                         Console.WriteLine(e.Data); // For debugging purposes
-
-                        errorOccurred = true;
+                        errorOccurred = true; // Set the error flag
                     }
                 };
 
@@ -127,20 +130,21 @@ namespace Django_GUI
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
 
-                await Task.Run(() => process.WaitForExit());
+                await Task.Run(() => process.WaitForExit()); // Wait for the process to exit
             }
             catch (Exception ex)
             {
-                errorOccurred = true;
+                errorOccurred = true; // Set the error flag
             }
             finally
             {
-                process?.Dispose();
+                process?.Dispose(); // Dispose the process
             }
 
-            return errorOccurred;
+            return errorOccurred; // Return the error flag
         }
 
+        // Event handler for key press in the ProjectName text box
         private void ProjectName_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Allow backspace
@@ -161,6 +165,7 @@ namespace Django_GUI
             }
         }
 
+        // Method to validate the Django app name
         private bool IsValidDjangoAppName(string name)
         {
             // Check if the name starts with a letter or underscore
@@ -173,11 +178,11 @@ namespace Django_GUI
             return Regex.IsMatch(name, @"^[a-zA-Z_][a-zA-Z0-9_]*$");
         }
 
+        // Event handler for loading the CreateProject form
         private void CreateProject_Load(object sender, EventArgs e)
         {
-            LocationPath.Text = path;
-
-            this.ActiveControl = CreateNew;
+            LocationPath.Text = path; // Set the LocationPath text box to the initial path
+            this.ActiveControl = CreateNew; // Set the CreateNew button as the active control
         }
     }
 }

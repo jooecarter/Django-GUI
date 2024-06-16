@@ -7,9 +7,10 @@ namespace Django_GUI.User_Controls
     {
         DjangoGUI parent; // Reference to the parent form
 
+        // Constructor to initialize the user control with the parent reference
         public Welcome(DjangoGUI _parent)
         {
-            InitializeComponent();
+            InitializeComponent(); // Initialize the user control components
             this.parent = _parent; // Set the parent reference
         }
 
@@ -22,12 +23,13 @@ namespace Django_GUI.User_Controls
             parent.NavigationPnl.Controls.Add(createNew); // Add the CreateNew control to the navigation panel
         }
 
+        // Event handler for the OpenExisting button click event
         private void OpenExisting_Click(object sender, EventArgs e)
         {
-            ExistingProjects existing = new ExistingProjects(parent);
+            ExistingProjects existing = new ExistingProjects(parent); // Create a new ExistingProjects control with the parent reference
 
-            parent.NavigationPnl.Controls.Clear();
-            parent.NavigationPnl.Controls.Add(existing);
+            parent.NavigationPnl.Controls.Clear(); // Clear the current controls in the navigation panel
+            parent.NavigationPnl.Controls.Add(existing); // Add the ExistingProjects control to the navigation panel
         }
     }
 }
