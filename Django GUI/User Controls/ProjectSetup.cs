@@ -395,7 +395,7 @@ namespace Django_GUI.User_Controls
             projects.Add(new ProjectDetails
             {
                 ProjectName = projectName,
-                ProjectPath = Path.Combine(directory, projectName)
+                ProjectPath = Path.Combine(directory, projectName) + "\\" + projectName
             });
 
             // Write the updated list to the JSON file

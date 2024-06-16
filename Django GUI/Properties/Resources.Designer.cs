@@ -63,9 +63,49 @@ namespace Django_GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CommandIcon {
+            get {
+                object obj = ResourceManager.GetObject("CommandIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DeleteMsgCirclular {
+            get {
+                object obj = ResourceManager.GetObject("DeleteMsgCirclular", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap django_logo_negative {
             get {
                 object obj = ResourceManager.GetObject("django-logo-negative", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Django_Logo_Transparent {
+            get {
+                object obj = ResourceManager.GetObject("Django-Logo-Transparent", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DjangoBackground {
+            get {
+                object obj = ResourceManager.GetObject("DjangoBackground", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -106,6 +146,16 @@ namespace Django_GUI.Properties {
         internal static System.Drawing.Bitmap PreviousStep {
             get {
                 object obj = ResourceManager.GetObject("PreviousStep", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SendIcon {
+            get {
+                object obj = ResourceManager.GetObject("SendIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

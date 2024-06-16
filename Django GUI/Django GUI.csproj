@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateApp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateApp.Designer.cs">
+      <DependentUpon>CreateApp.cs</DependentUpon>
+    </Compile>
     <Compile Include="DjangoGUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +63,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpdatePath.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdatePath.Designer.cs">
+      <DependentUpon>UpdatePath.cs</DependentUpon>
+    </Compile>
     <Compile Include="User Controls\CreateNew.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -81,12 +93,21 @@
     <Compile Include="User Controls\ProjectSetup.Designer.cs">
       <DependentUpon>ProjectSetup.cs</DependentUpon>
     </Compile>
+    <Compile Include="User Controls\ToolBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\ToolBox.Designer.cs">
+      <DependentUpon>ToolBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="User Controls\Welcome.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="User Controls\Welcome.Designer.cs">
       <DependentUpon>Welcome.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CreateApp.resx">
+      <DependentUpon>CreateApp.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DjangoGUI.resx">
       <DependentUpon>DjangoGUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -100,6 +121,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UpdatePath.resx">
+      <DependentUpon>UpdatePath.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="User Controls\CreateNew.resx">
       <DependentUpon>CreateNew.cs</DependentUpon>
     </EmbeddedResource>
@@ -111,6 +135,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="User Controls\ProjectSetup.resx">
       <DependentUpon>ProjectSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\ToolBox.resx">
+      <DependentUpon>ToolBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User Controls\Welcome.resx">
       <DependentUpon>Welcome.cs</DependentUpon>
@@ -146,6 +173,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\OpenExistingIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeleteMsgCirclular.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DjangoBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Django-Logo-Transparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CommandIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SendIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.CreateNewProject = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.OpenExisting = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -49,16 +49,26 @@
             this.panel1.Controls.Add(this.pictureBox2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.CreateNewProject);
-            this.panel1.Location = new System.Drawing.Point(233, 5);
+            this.panel1.Location = new System.Drawing.Point(232, 5);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(235, 207);
             this.panel1.TabIndex = 0;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::Django_GUI.Properties.Resources.NewIcon;
+            this.pictureBox2.Location = new System.Drawing.Point(91, 27);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(48, 29);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 8;
+            this.pictureBox2.TabStop = false;
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(0, 61);
+            this.label1.Location = new System.Drawing.Point(-1, 61);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(235, 71);
             this.label1.TabIndex = 4;
@@ -72,7 +82,7 @@
             this.CreateNewProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CreateNewProject.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CreateNewProject.ForeColor = System.Drawing.Color.Black;
-            this.CreateNewProject.Location = new System.Drawing.Point(48, 149);
+            this.CreateNewProject.Location = new System.Drawing.Point(47, 149);
             this.CreateNewProject.Name = "CreateNewProject";
             this.CreateNewProject.Size = new System.Drawing.Size(141, 30);
             this.CreateNewProject.TabIndex = 3;
@@ -86,16 +96,26 @@
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.OpenExisting);
-            this.panel2.Location = new System.Drawing.Point(3, 5);
+            this.panel2.Location = new System.Drawing.Point(2, 5);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(224, 207);
             this.panel2.TabIndex = 1;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Django_GUI.Properties.Resources.OpenExistingIcon;
+            this.pictureBox1.Location = new System.Drawing.Point(82, 26);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(48, 29);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(1, 61);
+            this.label2.Location = new System.Drawing.Point(-7, 61);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(222, 71);
             this.label2.TabIndex = 6;
@@ -109,7 +129,7 @@
             this.OpenExisting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OpenExisting.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OpenExisting.ForeColor = System.Drawing.Color.Black;
-            this.OpenExisting.Location = new System.Drawing.Point(41, 149);
+            this.OpenExisting.Location = new System.Drawing.Point(33, 149);
             this.OpenExisting.Name = "OpenExisting";
             this.OpenExisting.Size = new System.Drawing.Size(141, 30);
             this.OpenExisting.TabIndex = 5;
@@ -117,38 +137,18 @@
             this.OpenExisting.UseVisualStyleBackColor = false;
             this.OpenExisting.Click += new System.EventHandler(this.OpenExisting_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::Django_GUI.Properties.Resources.OpenExistingIcon;
-            this.pictureBox1.Location = new System.Drawing.Point(90, 26);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(48, 29);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 7;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::Django_GUI.Properties.Resources.NewIcon;
-            this.pictureBox2.Location = new System.Drawing.Point(92, 27);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(48, 29);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 8;
-            this.pictureBox2.TabStop = false;
-            // 
             // Welcome
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(46)))), ((int)(((byte)(32)))));
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Welcome";
             this.Size = new System.Drawing.Size(472, 254);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }

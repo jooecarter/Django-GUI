@@ -155,6 +155,7 @@
             this.ProjectName.TabIndex = 5;
             this.ProjectName.Text = "Click to add project name...";
             this.ProjectName.Enter += new System.EventHandler(this.ProjectName_Enter);
+            this.ProjectName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ProjectName_KeyPress);
             this.ProjectName.Leave += new System.EventHandler(this.ProjectName_Leave);
             // 
             // label1
@@ -254,7 +255,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(46)))), ((int)(((byte)(32)))));
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.PreviousStep);
             this.Controls.Add(this.CompareVersions);
             this.Controls.Add(this.pictureBox1);

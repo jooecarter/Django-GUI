@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Django_GUI.User_Controls
@@ -86,6 +87,31 @@ namespace Django_GUI.User_Controls
         {
             // Open the Django releases page in the default web browser
             Process.Start("https://docs.djangoproject.com/en/5.0/releases/");
+        }
+
+        private void ProjectName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Get the current text including the new character
+            string currentText = ProjectName.Text + e.KeyChar;
+
+            // Validate the character
+            if (!IsValidDjangoAppName(currentText))
+            {
+                // Suppress the key press to prevent the invalid character from being entered
+                e.Handled = true;
+            }
+        }
+
+        private bool IsValidDjangoAppName(string name)
+        {
+            // Check if the name starts with a letter or underscore
+            if (string.IsNullOrEmpty(name) || !(char.IsLetter(name[0]) || name[0] == '_'))
+            {
+                return false;
+            }
+
+            // Use a regular expression to check for valid characters (letters, digits, and underscores)
+            return Regex.IsMatch(name, @"^[a-zA-Z_][a-zA-Z0-9_]*$");
         }
     }
 }

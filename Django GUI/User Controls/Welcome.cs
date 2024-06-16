@@ -24,7 +24,7 @@ namespace Django_GUI.User_Controls
 
         private void OpenExisting_Click(object sender, EventArgs e)
         {
-            ExistingProjects existing = new ExistingProjects();
+            ExistingProjects existing = new ExistingProjects(parent);
 
             parent.NavigationPnl.Controls.Clear();
             parent.NavigationPnl.Controls.Add(existing);
