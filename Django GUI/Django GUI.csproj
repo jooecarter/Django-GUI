@@ -55,6 +55,12 @@
     <Compile Include="CreateApp.Designer.cs">
       <DependentUpon>CreateApp.cs</DependentUpon>
     </Compile>
+    <Compile Include="CreateProject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateProject.Designer.cs">
+      <DependentUpon>CreateProject.cs</DependentUpon>
+    </Compile>
     <Compile Include="DjangoGUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     </Compile>
     <EmbeddedResource Include="CreateApp.resx">
       <DependentUpon>CreateApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateProject.resx">
+      <DependentUpon>CreateProject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DjangoGUI.resx">
       <DependentUpon>DjangoGUI.cs</DependentUpon>

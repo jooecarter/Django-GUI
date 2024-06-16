@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -26,20 +27,36 @@ namespace Django_GUI.User_Controls
         {
             NameLbl.Text = name;
 
-            bool errorOccured = await RunCommand("python manage.py", path);
+            string batchScriptPath = Path.Combine(Path.GetTempPath(), "run_commands.bat");
 
-            if (errorOccured)
+            // Create the batch script
+            CreateBatchScript(batchScriptPath, Path.GetDirectoryName(path), "Scripts\\activate", path, "python manage.py");
+
+            // Run the batch script
+            bool errorOccurred = await RunCommand(batchScriptPath, Path.GetDirectoryName(path));
+
+            if (errorOccurred)
             {
                 ControlsPnl.Enabled = false;
 
                 // Show error message
-                MessageBox.Show("Could not find the file 'manage.py'.\nPlease update your path.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Could not run the commands. Please check your activation script and manage.py file.", "DjangoGUI", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
                 // Open UpdatePath dialog
                 UpdatePath update = new UpdatePath(parent, name, path);
                 update.ShowDialog();
             }
         }
+
+        private void CreateBatchScript(string scriptPath, string activateDirectory, string activateCommand, string managePyDirectory, string managePyCommand)
+        {
+            using (StreamWriter writer = new StreamWriter(scriptPath))
+            {
+                writer.WriteLine($"cd /d \"{activateDirectory}\"");
+                writer.WriteLine($"{activateCommand} & cd /d \"{managePyDirectory}\" & {managePyCommand}");
+            }
+        }
+
 
         // Event handler for when the PreviousStep button is clicked
         private void PreviousStep_Click(object sender, EventArgs e)
@@ -52,7 +69,7 @@ namespace Django_GUI.User_Controls
 
         private async Task<bool> RunCommand(string command, string workingDirectory)
         {
-            bool errorOccured = false;
+            bool errorOccurred = false;
             Process process = null;
             try
             {
@@ -86,7 +103,7 @@ namespace Django_GUI.User_Controls
                         AppendTextToOutput("Error: " + e.Data); // Append error output to the output text box
                         Console.WriteLine(e.Data); // For debugging purposes
 
-                        errorOccured = true;
+                        errorOccurred = true;
                     }
                 };
 
@@ -98,7 +115,7 @@ namespace Django_GUI.User_Controls
             }
             catch (Exception ex)
             {
-                errorOccured = true;
+                errorOccurred = true;
                 AppendTextToOutput($"Error: {ex.Message}");
             }
             finally
@@ -106,7 +123,7 @@ namespace Django_GUI.User_Controls
                 process?.Dispose();
             }
 
-            return errorOccured;
+            return errorOccurred;
         }
 
         // Scroll to the bottom of the output text box

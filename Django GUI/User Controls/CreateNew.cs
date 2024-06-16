@@ -91,6 +91,13 @@ namespace Django_GUI.User_Controls
 
         private void ProjectName_KeyPress(object sender, KeyPressEventArgs e)
         {
+            // Allow backspace
+            if (e.KeyChar == (char)Keys.Back)
+            {
+                e.Handled = false;
+                return;
+            }
+
             // Get the current text including the new character
             string currentText = ProjectName.Text + e.KeyChar;
 
