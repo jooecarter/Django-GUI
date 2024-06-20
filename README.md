@@ -6,4 +6,7 @@ This GUI aims to streamline the process of setting up and deploying Django appli
 
 Changes will be made frequently to provide more advanced, user-friendly features.
 
+* INSTALLATION *
+Please make sure that the latest version of Python is installed and a path is added to environmental variables on your machine before running the DjangoGUI.
+
 Last updated 15th June 2024 @ 19:30PM (GBT).
